@@ -54,7 +54,8 @@ template_loader = DictLoader({
 </div>"""
 })
 
-app = Sanic(__name__)
+app = Sanic("didyouknow")
+
 app.ctx.jinja = Environment(loader=template_loader)
 
 async def random_wikipedia_extract():
@@ -75,3 +76,6 @@ async def index(request):
 async def another(request):
     data = await random_wikipedia_extract()
     return render_template("card.html", data)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000)
