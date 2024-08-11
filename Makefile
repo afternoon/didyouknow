@@ -1,4 +1,5 @@
 name = didyouknow
+tag = $(name):latest
 
 .PHONY: dev docker_build docker_run
 
@@ -8,8 +9,8 @@ dev:
 repl:
 	poetry run python3
 
-docker_build:
-	docker build --tag $(name):latest .
+docker_build: Dockerfile didyouknow/*.py
+	docker build --tag $(tag) .
 
 docker_run:
-	docker run --publish 8000:8000 $(name):latest
+	docker run --publish 8000:8000 $(tag)
