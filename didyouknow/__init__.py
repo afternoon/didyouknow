@@ -25,13 +25,13 @@ template_loader = DictLoader({
             }
         </style>
     </head>
-    <body class="bg-gradient-to-r from-sky-500 to-indigo-500 dark:from-slate-950 dark:to-black m-28">
-        <div class="block-htmx-indicator max-w-sm mx-auto text-center p-28 text-2xl font-bold text-white">
+    <body class="bg-white dark:bg-slate-800 sm:bg-gradient-to-r sm:from-sky-500 sm:to-indigo-500 sm:dark:from-slate-950 sm:dark:to-black sm:m-28">
+        <div class="block-htmx-indicator sm:max-w-sm sm:mx-auto text-center p-28 text-2xl font-bold text-white">
             <img src="http://samherbert.net/svg-loaders/svg-loaders/oval.svg" class="inline-block w-28 h-28 pb-10">
             Loading
         </div>
         {% include "card.html" %}
-        <div class="max-w-lg mx-auto px-12 pb-10 pt-10 text-center">
+        <div class="sm:max-w-lg sm:mx-auto sm:px-12 sm:py-10 text-center">
             <a
                 href="."
                 hx-get="/another"
@@ -39,14 +39,18 @@ template_loader = DictLoader({
                 hx-swap="outerHTML"
                 hx-indicator=".block-htmx-indicator"
                 hx-on:click="document.getElementById('card').innerHTML = '';"
-                class="inline-block border border-sky-100 text-sky-100 hover:bg-sky-100 hover:text-sky-900 active:bg-slate-800 active:text-sky-100 text-sm font-semibold py-2 px-4 rounded-md">
+                class="inline-block border hover:border-gray-500 hover:bg-gray-400
+                active:border-gray-600 active:bg-gray-600 active:text-gray-100
+                sm:border-sky-100 sm:text-sky-100 sm:hover:bg-sky-100 sm:hover:text-sky-900 sm:active:bg-slate-800 sm:active:text-sky-100
+                dark:border-sky-100 dark:text-sky-100 dark:hover:bg-sky-100 dark:hover:text-sky-900 dark:active:bg-slate-800 dark:active:text-sky-100
+                text-sm font-semibold py-2 px-4 rounded-md">
                 Another
             </a>
         </div>
     </body>
 </html>""",
     "card.html": """
-<div id="card" class="max-w-lg mx-auto overflow-hidden rounded shadow-lg bg-white dark:bg-slate-800">
+<div id="card" class="sm:max-w-lg sm:mx-auto overflow-hidden sm:rounded sm:shadow-lg bg-white dark:bg-slate-800">
     <img src="{{ originalimage.source }}" class="w-full h-80 object-cover object-top">
     <div class="p-12 text-sm text-slate-700 dark:text-slate-100">
         {{ extract_html }}
