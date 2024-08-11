@@ -1,9 +1,10 @@
-from httpx import AsyncClient
+from random import choice
+
 from jinja2 import Environment, DictLoader
 from sanic import Sanic
 from sanic.response import html
 
-WIKIPEDIA_RANDOM_API_URL = "https://en.wikipedia.org/api/rest_v1/page/random/summary"
+from didyouknow.facts import load
 
 template_loader = DictLoader({
     "index.html": """
@@ -58,24 +59,18 @@ app = Sanic("didyouknow")
 
 app.ctx.jinja = Environment(loader=template_loader)
 
-async def random_wikipedia_extract():
-    async with AsyncClient() as client:
-        response = await client.get(WIKIPEDIA_RANDOM_API_URL, follow_redirects=True)
-        response.raise_for_status()
-        return response.json()
+app.ctx.facts = load()
 
 def render_template(template, data):
     return html(app.ctx.jinja.get_template(template).render(**data))
 
 @app.get("/")
 async def index(request):
-    data = await random_wikipedia_extract()
-    return render_template("index.html", data)
+    return render_template("index.html", choice(app.ctx.facts))
 
 @app.get("/another")
 async def another(request):
-    data = await random_wikipedia_extract()
-    return render_template("card.html", data)
+    return render_template("card.html", choice(app.ctx.facts))
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)
