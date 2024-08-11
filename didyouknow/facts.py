@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import pickle
+from typing import Optional
 
 from httpx import get, HTTPError
 
@@ -16,11 +17,14 @@ class Fact:
     desktop_url: str
     mobile_url: str
 
-def fact_from_wikipedia_summary(data: dict) -> Fact:
-    return Fact(data["extract_html"],
-                data["originalimage"]["source"],
-                data["content_urls"]["desktop"]["page"],
-                data["content_urls"]["mobile"]["page"])
+def fact_from_wikipedia_summary(data: dict) -> Optional[Fact]:
+    try:
+        return Fact(data["extract_html"],
+                    data["originalimage"]["source"],
+                    data["content_urls"]["desktop"]["page"],
+                    data["content_urls"]["mobile"]["page"])
+    except KeyError:
+        return None
 
 def load() -> list[Fact]:
     try:
@@ -43,7 +47,8 @@ def download():
             else:
                 data = response.json()
                 fact = fact_from_wikipedia_summary(data)
-                facts.append(fact)
+                if fact:
+                    facts.append(fact)
                 print(f"download_facts downloaded {data['title']}")
         with open(FACTFILE_FILENAME, "wb") as f:
             pickle.dump(facts, f, pickle.HIGHEST_PROTOCOL)
