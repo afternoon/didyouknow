@@ -25,4 +25,4 @@ EXPOSE 8000
 
 WORKDIR /app
 
-CMD [".venv/bin/python3", "didyouknow/__main__.py"]
+CMD [".venv/bin/sanic", "didyouknow:app", "--host", "0.0.0.0"]

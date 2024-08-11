@@ -4,7 +4,7 @@ from jinja2 import Environment, DictLoader
 from sanic import Sanic
 from sanic.response import html
 
-from facts import load
+from .facts import load
 
 template_loader = DictLoader({
     "index.html": """

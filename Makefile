@@ -3,7 +3,7 @@ name = didyouknow
 .PHONY: dev docker_build docker_run
 
 dev:
-	poetry run python3 $(name)/__main__.py
+	poetry run sanic $(name):app --dev
 
 repl:
 	poetry run python3
