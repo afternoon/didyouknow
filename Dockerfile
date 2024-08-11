@@ -25,4 +25,4 @@ EXPOSE 8000
 
 WORKDIR /app
 
-CMD [".venv/bin/python3", "didyouknow/__init__.py"]
+CMD [".venv/bin/python3", "didyouknow/__main__.py"]
