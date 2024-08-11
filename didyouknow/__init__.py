@@ -6,8 +6,10 @@ from sanic.response import html
 
 from .facts import load
 
-template_loader = DictLoader({
-    "index.html": """
+
+template_loader = DictLoader(
+    {
+        "index.html": """
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -49,15 +51,16 @@ template_loader = DictLoader({
         </div>
     </body>
 </html>""",
-    "card.html": """
+        "card.html": """
 <div id="card" class="sm:max-w-lg sm:mx-auto overflow-hidden sm:rounded sm:shadow-lg bg-white dark:bg-slate-800">
     <img src="{{ originalimage.source }}" class="w-full h-80 object-cover object-top">
     <div class="p-12 text-sm text-slate-700 dark:text-slate-100">
         {{ extract_html }}
         <a class="underline text-slate-500 dark:text-slate-200 hover:text-slate-900" href="{{ content_urls.desktop.page }}">See more...</a>
     </div>
-</div>"""
-})
+</div>""",
+    }
+)
 
 app = Sanic("didyouknow")
 
@@ -65,16 +68,16 @@ app.ctx.jinja = Environment(loader=template_loader)
 
 app.ctx.facts = load()
 
+
 def render_template(template, data):
     return html(app.ctx.jinja.get_template(template).render(**data))
+
 
 @app.get("/")
 async def index(request):
     return render_template("index.html", choice(app.ctx.facts))
 
+
 @app.get("/another")
 async def another(request):
     return render_template("card.html", choice(app.ctx.facts))
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
